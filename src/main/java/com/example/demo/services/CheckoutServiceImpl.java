@@ -25,9 +25,14 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
-
+        String error = "Cart cannot be empty.";
         //Gets cart
         Cart cart = purchase.getCart();
+
+        //Check if cart exists
+        if(cart == null){
+            return new PurchaseResponse(error);
+        }
 
         //Set cart status to ordered
         StatusType status = StatusType.ordered;
@@ -37,8 +42,15 @@ public class CheckoutServiceImpl implements CheckoutService {
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
 
-        //Get cart items, add them to cart
+        //Get cart items
         Set<CartItem> cartItems = purchase.getCartItems();
+
+        //Check if cartItems exists and is not empty
+        if(cartItems == null || cartItems.isEmpty()){
+            return new PurchaseResponse(error);
+        }
+
+        //add cartItems to cart
         cartItems.forEach(item -> cart.add(item));
 
         //Get customer, add cart to customer
