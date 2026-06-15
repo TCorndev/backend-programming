@@ -25,6 +25,9 @@ public class Cart {
     @Column(name="order_tracking_number")
     private String orderTrackingNumber;
 
+    @Column(name="party_size")
+    private Long party_size;
+
     @Column(name="package_price")
     private BigDecimal package_price;
 

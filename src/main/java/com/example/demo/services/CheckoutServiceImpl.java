@@ -53,10 +53,9 @@ public class CheckoutServiceImpl implements CheckoutService {
         //add cartItems to cart
         cartItems.forEach(item -> cart.add(item));
 
-        //Get customer, add cart to customer
-        Customer customer = purchase.getCustomer();
+        //Get customer from the database using the customer ID from the purchase, add cart to customer
+        Customer customer = customerRepository.findById(purchase.getCustomer().getId()).orElseThrow();
         customer.add(cart);
-
         //Update customer in the database
         customerRepository.save(customer);
 
